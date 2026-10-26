@@ -1,0 +1,87 @@
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    form {
+        width: 500px;
+        padding: 50px;
+        box-sizing: border-box;
+        background: #a09c9c;
+        border: 1px solid #333;
+        box-shadow: 0 0 10px #000;
+        margin: 70px auto;
+    }
+
+    h1 {
+        text-align: center;
+        color: black;
+        margin-bottom: 45px;
+    }
+
+    input {
+        width: 100%;
+        height: 55px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: white;
+        border: 1px solid #444;
+        border-radius: 5px;
+        color: black;
+        font-size: 17px;
+    }
+
+    input:focus {
+        outline: none;
+        border: 2px solid #20d840;
+        box-shadow: 0 0 10px #20d840;
+    }
+
+    button {
+        width: 100%;
+        height: 55px;
+        background: #292929;
+        border: 1px solid #444;
+        border-radius: 5px;
+        color: #aaa;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #333;
+    }
+
+    .login {
+        text-align: center;
+        color: #999;
+        margin-top: 25px;
+        font-size: 16px;
+    }
+
+    .login span {
+        color: #20d840;
+    }
+
+    .or {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #777;
+        margin: 25px 0;
+    }
+
+    .or hr {
+        flex: 1;
+        border: none;
+        border-top: 1px solid #444;
+    }
+
+    .facebook {
+        margin-bottom: 15px;
+    }
+
+    .google {
+        color: #aaa;
+    }

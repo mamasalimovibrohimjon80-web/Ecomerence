@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+
+    <h1>SIGNUP</h1>
+
+
+
+    {{form.as_p}}
+    <input type="password" name="password2" placeholder="Confirm password">
+
+    <button type="submit">SIGNUP</button>
+
+    <div class="login">Already have an account? <span>Login</span></div>
+
+    <div class="or">
+        <hr>
+        Or
+        <hr>
+    </div>
+    <button type="button" class="facebook"> ● &nbsp; Signup with Facebook</button>
+    <button type="button" class="google"> 🔵 &nbsp; Signup with Google</button>
+</form>
+
+{% endblock %}

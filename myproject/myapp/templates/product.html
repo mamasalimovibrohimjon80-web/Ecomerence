@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ mahsulot.nomi }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: white;
+            color: #171717;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .alert {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #eef7f0;
+            color: #167d36;
+            font-size: 14px;
+        }
+
+        .product {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 430px;
+            object-fit: contain;
+            border: 1px solid #eeeeee;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .thumbnail {
+            width: 75px;
+            height: 75px;
+            padding: 5px;
+            object-fit: contain;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border: 2px solid #171717;
+        }
+
+        .product-title {
+            margin: 0 0 15px;
+            font-size: 30px;
+        }
+
+        .price {
+            margin: 20px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .description {
+            line-height: 1.7;
+            color: #666;
+            white-space: pre-line;
+        }
+
+        .label {
+            display: block;
+            margin: 25px 0 12px;
+            font-weight: bold;
+        }
+
+        .colors {
+            display: flex;
+            gap: 12px;
+        }
+
+        .color {
+            width: 32px;
+            height: 32px;
+            border: 2px solid white;
+            outline: 1px solid #cccccc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .color.active {
+            outline: 2px solid #171717;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            width: fit-content;
+            margin-top: 12px;
+            padding: 8px 12px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+        }
+
+        .quantity button {
+            width: 25px;
+            height: 25px;
+            border: none;
+            background: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .quantity span {
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .stock {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .add-cart {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #171717;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .add-cart:hover {
+            background: #444;
+        }
+
+        .add-cart:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .wishlist-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px;
+            border: 1px solid #171717;
+            border-radius: 8px;
+            background: white;
+            color: #171717;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .wishlist-btn:hover {
+            background: #f4f4f4;
+        }
+
+        .wishlist-btn.active {
+            border-color: #d62839;
+            color: #d62839;
+        }
+
+        .wishlist-login {
+            display: block;
+            margin-top: 12px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: #167d36;
+            font-size: 14px;
+        }
+
+        .reviews {
+            margin-top: 40px;
+        }
+
+        .review-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            list-style: none;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .review-item small {
+            float: right;
+            color: gray;
+        }
+
+        .review-submit {
+            padding: 8px 15px;
+            border: none;
+            background: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                width: 92%;
+                margin: 20px auto;
+            }
+
+            .product {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .main-image {
+                height: 320px;
+            }
+
+            .product-title {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <a class="back" href="{% url 'products' %}">← Mahsulotlarga qaytish</a>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="product">
+
+            <!-- Rasmlar -->
+            <div class="gallery">
+
+                <img class="main-image" id="mainImage" src="{{ mahsulot.omage.url }}" alt="{{ mahsulot.nomi }}">
+
+                <div class="thumbnails">
+                    <img class="thumbnail active" src="{{ mahsulot.omage.url }}" alt="Asosiy rasm"
+                        onclick="changeImage(this)">
+
+                    {% for item in mahsulot.images.all %}
+                    <img class="thumbnail" src="{{ item.image.url }}" alt="{{ mahsulot.nomi }}"
+                        onclick="changeImage(this)">
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!-- Mahsulot ma'lumotlari -->
+            <div class="product-info">
+
+                <h1 class="product-title">{{ mahsulot.nomi }}</h1>
+
+                <div class="price">{{ mahsulot.price }} so'm</div>
+
+                <p class="description">{{ mahsulot.description }}</p>
+
+                <p>
+                    <b>O'rtacha reyting:</b> ⭐️ {{ average_rating }} / 5
+                    ({{ reviews.count }} ta sharh)
+                </p>
+
+                <span class="label">Rangni tanlang:</span>
+
+                <div class="colors">
+                    <button type="button" class="color active" style="background: #171717;" data-color="Qora"
+                        aria-label="Qora rang" onclick="selectColor(this)"></button>
+
+                    <button type="button" class="color" style="background: #eeeeee;" data-color="Oq"
+                        aria-label="Oq rang" onclick="selectColor(this)"></button>
+
+                    <button type="button" class="color" style="background: #244d8f;" data-color="Ko'k"
+                        aria-label="Ko'k rang" onclick="selectColor(this)"></button>
+
+                    <button type="button" class="color" style="background: #a52a2a;" data-color="Qizil"
+                        aria-label="Qizil rang" onclick="selectColor(this)"></button>
+                </div>
+
+                <p>
+                    Tanlangan rang:
+                    <strong id="selectedColor">Qora</strong>
+                </p>
+
+                <p>👁️ {{ mahsulot.korishlar }} marta ko'rilgan</p>
+
+                <span class="label">Miqdor:</span>
+
+                <div class="quantity">
+                    <button type="button" onclick="changeQuantity(-1)">−</button>
+                    <span id="quantity">1</span>
+                    <button type="button" onclick="changeQuantity(1)">+</button>
+                </div>
+
+                <p class="stock">Omborda: {{ mahsulot.quantity }} dona</p>
+
+                <!-- Savatga qo'shish tugmasi -->
+                <a href="{% url 'add_to_cart' mahsulot.slug %}"
+                    style="padding: 10px 20px; background: blue; color: white; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">
+                    🛒 Savatga qo'shish
+                </a>
+
+                <p class="message" id="message"></p>
+
+                <!-- Sevimlilar -->
+                {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'toggle_wishlist' mahsulot.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="wishlist-btn {% if in_wishlist %}active{% endif %}">
+                        {% if in_wishlist %}❤️ Sevimlilardan olib tashlash{% else %}🤍 Sevimlilarga qo'shish{% endif %}
+                    </button>
+                </form>
+                {% else %}
+                <a class="wishlist-login" href="{% url 'login' %}">🤍 Sevimlilarga qo'shish uchun tizimga kiring</a>
+                {% endif %}
+
+            </div>
+            <!-- /product-info -->
+
+        </div>
+        <!-- /product -->
+
+        <!-- Sharhlar -->
+        <div class="reviews">
+
+            <hr>
+
+            <h3>Mijozlarning sharhlari</h3>
+
+            {% if reviews %}
+            <ul style="padding: 0;">
+                {% for review in reviews %}
+                <li class="review-item">
+                    <b>{{ review.user.username }}</b> —
+                    <span style="color: orange;">
+                        {% with ''|center:review.rating as stars %}
+                        {% for _ in stars %}⭐️{% endfor %}
+                        {% endwith %}
+                    </span>
+                    <small>{{ review.created_at|date:"d.m.Y H:i" }}</small>
+                    <p style="margin-top: 5px;">{{ review.comment }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Hozircha bu mahsulotga sharh yozilmagan. Birinchi bo'lib yozing!</p>
+            {% endif %}
+
+            <hr>
+
+            <h3>Sharh qoldirish</h3>
+
+            {% if request.user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="review-submit">Sharh yuborish</button>
+            </form>
+            {% else %}
+            <p>Sharh qoldirish uchun <a href="{% url 'login' %}">tizimga kiring</a>.</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+    <!-- /container -->
+
+    <script>
+        const maxQuantity = Number("{{ mahsulot.quantity }}");
+
+        let quantity = 1;
+        let selectedColor = "Qora";
+
+        function changeImage(element) {
+            document.getElementById("mainImage").src = element.src;
+
+            document.querySelectorAll(".thumbnail").forEach(function (thumbnail) {
+                thumbnail.classList.remove("active");
+            });
+
+            element.classList.add("active");
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll(".color").forEach(function (color) {
+                color.classList.remove("active");
+            });
+
+            element.classList.add("active");
+
+            selectedColor = element.dataset.color;
+            document.getElementById("selectedColor").textContent = selectedColor;
+        }
+
+        function changeQuantity(number) {
+            const newQuantity = quantity + number;
+
+            if (newQuantity >= 1 && newQuantity <= maxQuantity) {
+                quantity = newQuantity;
+                document.getElementById("quantity").textContent = quantity;
+            }
+        }
+
+        function addToCart() {
+            const product = {
+                id: "{{ mahsulot.id }}",
+                name: "{{ mahsulot.nomi|escapejs }}",
+                price: Number("{{ mahsulot.price }}"),
+                image: document.getElementById("mainImage").src,
+                color: selectedColor,
+                quantity: quantity
+            };
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            const existingProduct = cart.find(function (item) {
+                return item.id === product.id && item.color === product.color;
+            });
+
+            if (existingProduct) {
+                if (existingProduct.quantity + quantity > maxQuantity) {
+                    document.getElementById("message").textContent = "Omborda buncha mahsulot yo‘q.";
+                    return;
+                }
+
+                existingProduct.quantity += quantity;
+            } else {
+                cart.push(product);
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            document.getElementById("message").textContent = "Mahsulot savatga qo‘shildi!";
+        }
+    </script>
+
+</body>
+
+</html>

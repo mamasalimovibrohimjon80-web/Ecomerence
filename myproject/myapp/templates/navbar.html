@@ -1,0 +1,53 @@
+<style>
+    .cart-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 22px;
+    }
+    .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -12px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        min-width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        border-radius: 50%;
+        padding: 0 3px;
+    }
+</style>
+
+<nav>
+    <h1>Mening saytim</h1>
+
+    <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'register' %}">Register</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+
+        <li><a href="{% url 'wishlist_list' %}">❤️ Sevimlilar</a></li>
+
+        <li>
+           <a href="{% url 'cart_detail' %}" class="cart-link">
+    🛒
+    {% if cart_count > 0 %}
+    <span class="cart-badge">{{ cart_count }}</span>
+    {% endif %}
+</a>
+        </li>
+    </ul>
+
+    <form style="background: transparent; width: 300px;" action="" method="GET">
+        <input style="width: 120px;" type="text" placeholder="Search" name="q">
+        <button type="submit">Search</button>
+    </form>
+</nav>

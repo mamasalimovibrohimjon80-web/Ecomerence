@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>Home pagega hush kelibsiz</h1>
+
+
+
+{% for x in product %}
+<div class="product-card">
+    <img src="{{ x.omage.url }}" alt="">
+
+    <div class="product-name">
+        <a href="{% url 'product-view' x.slug %}">{{x.nomi}}</a>
+    </div>
+
+    <div class="product-description">
+        {{ x.description }}
+    </div>
+
+    <div class="product-price">
+        {{ x.price }} so'm
+    </div>
+
+    <p>👁️ {{ x.korishlar }} marta ko'rilgan</p>
+
+    <form method="post" action="{% url 'like' x.slug %}">
+        {% csrf_token %}
+        <button type="submit" class="like-btn {% if liked %}liked{% endif %}">
+            {% if liked %}❤️ Yoqdi{% else %}🤍 Yoqtirish{% endif %}
+            ({{ x.likes.count }})
+        </button>
+    </form>
+
+    <div class="product-bottom">
+
+        <button class="cart">
+            🛒
+        </button>
+
+        <button class="payment">
+            Muddatli to'lov
+        </button>
+    </div>
+</div>
+
+{% endfor %}
+
+
+</div>
+
+{% endblock %}

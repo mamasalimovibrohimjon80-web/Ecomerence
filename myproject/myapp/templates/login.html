@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+
+    </style>
+
+  
+
+    {% for xabar in message %}
+    <h1>{{xabar}}</h1>
+    {% endfor %}
+    <form action="" method="POST">
+
+
+        {% csrf_token %}
+
+        <h1>LOGIN</h1>
+
+        <div class="input-box">
+            <div class="icon">✉</div>
+
+            <input type="text" name="username" placeholder="Email or Phone">
+        </div>
+
+
+        <div class="input-box">
+            <div class="icon">🔒</div>
+
+            <input type="password" name="password" placeholder="Password">
+        </div>
+
+
+        <button type="submit">
+            LOGIN
+        </button>
+
+
+        <div class="signup">
+            Not a member?
+            <span>Signup now</span>
+        </div>
+
+    </form>
+    {% endblock %}
